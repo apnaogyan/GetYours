@@ -1,15 +1,15 @@
-const socket = new WebSocket('ws://localhost:3000');
-
-socket.addEventListener('message', (event) => {
-    const messagesContainer = document.getElementById('messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.textContent = event.data;
-    messagesContainer.appendChild(messageDiv);
-});
+const socket = io();
 
 function sendMessage() {
     const messageInput = document.getElementById('message-input');
     const message = messageInput.value;
-    socket.send(message);
+    socket.emit('chat message', message);
     messageInput.value = '';
 }
+
+socket.on('chat message', (msg) => {
+    const messagesContainer = document.getElementById('messages');
+    const newMessage = document.createElement('div');
+    newMessage.textContent = msg;
+    messagesContainer.appendChild(newMessage);
+});
